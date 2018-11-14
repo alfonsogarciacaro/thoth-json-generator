@@ -1,0 +1,16 @@
+{
+  "name": "thoth-json-generator",
+  "version": "1.0.0-alpha",
+  "description": "",
+  "main": "dist/Main.js",
+  "scripts": {
+    "build": "cd src && dotnet fable fable-splitter -- src/App.fsproj -o dist --run",
+    "start": "yarn build --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "fable-splitter": "^2.1.0-alpha-002"
+  }
+}
