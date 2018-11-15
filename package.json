@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/node": "^10.12.7",
     "fable-splitter": "^2.1.0-alpha-002"
   }
 }

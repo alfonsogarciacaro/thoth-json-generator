@@ -12,6 +12,7 @@
     <DotNetCliToolReference Include="dotnet-fable" Version="2.0.10" />
     <PackageReference Include="Fable.Core" Version="2.0.1" />
     <PackageReference Include="Fable.Import.Node" Version="0.4.3" />
+    <PackageReference Include="Fable.PowerPack" Version="2.0.2" />
   </ItemGroup>
 
 </Project>
