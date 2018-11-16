@@ -4,7 +4,7 @@
   "description": "",
   "main": "dist/Main.js",
   "scripts": {
-    "build": "cd src && dotnet fable fable-splitter -- src/App.fsproj -o dist --run",
+    "build": "fable-splitter src/ --run",
     "start": "yarn build --watch"
   },
   "keywords": [],
@@ -12,6 +12,6 @@
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^10.12.7",
-    "fable-splitter": "^2.1.0-alpha-002"
+    "fable-splitter": "^2.1.0-beta-001"
   }
 }
