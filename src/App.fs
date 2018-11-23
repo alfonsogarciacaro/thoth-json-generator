@@ -13,9 +13,9 @@ let SEPARATOR = """
 let ALL = @"(?:.|\n)"
 let LINE = @"\r?\n"
 
-let RECORD = Regex(@"type (\w+)\s*=\s*{((?:.|\n)*?)}")
-let UNION = Regex(@"type (\w+)\s*=\s*\n((?:\s*(?:\/\/|\|).*\n)+)")
-let UNION_CASE = Regex(@"^\s*\|\s*(\w*)(?: of (.+))?$")
+let RECORD = Regex @"(?:type|and)\s+(?:\[<.*?>\])?\s*(\w+)(?:<.+?>)?\s*=\s*{((?:.|\n)*?)}"
+let UNION =  Regex @"(?:type|and)\s+(?:\[<.*?>\])?\s*(\w+)(?:<.+?>)?\s*=\s*\n((?:\s*(?:\/\/|\|).*\n)+)"
+let UNION_CASE = Regex @"^\s*\|\s*(\w*)(?: of (.+))?$"
 
 let RECORD_ENCODER_TEMPLATE = """
     static member Encode(x: [NAME]) =
@@ -42,7 +42,7 @@ let UNION_FIELD_ENCODER_TEMPLATE = """
         | [NAME][FIELDS1] -> Encode.array [|Encode.string "[NAME]"[FIELDS2]|]"""
 
 let UNION_DECODER_TEMPLATE = """
-    static member Decode =
+    static member Decoder =
         Decode.index 0 Decode.string |> Decode.andThen (function[CASES]
             | _ -> Decode.fail "unkown")"""
 
@@ -57,6 +57,8 @@ type [NAME] with[ENCODER][DECODER]"""
 
 let BUILT_IN_TYPES =
     Map [
+        "bool", "bool"
+        "Guid", "guid"
         "string", "string"
         "int", "int"
         "float", "float"
@@ -235,9 +237,8 @@ let printUnionDecoder name (cases: (string * string list) list) =
                         name
                     else
                         let fsNames = fs |> List.mapi (fun i _ -> sprintf "f%i" (i+1))
-                        "(fun [FIELD_CURRIED] -> [NAME]([FIELD_TUPLED]))"
-                            .Replace("[FIELD_CURRIED]", String.concat " " fsNames)
-                            .Replace("[FIELD_TUPLED]", String.concat ", " fsNames)
+                        sprintf "(fun %s -> %s(%s))"
+                            (String.concat " " fsNames) name (String.concat ", " fsNames)
                 let decoders = fs |> List.mapi (fun i f ->
                     sprintf "(Decode.index %i %s)" (i+1) (printDecoderCall f))
                 UNION_CASE_DECODER_TEMPLATE
@@ -265,6 +266,8 @@ let run (args: string[]) =
         Node.fs.readFileSync filePath |> string
     printfn "%s" filePath
     printfn "%s" SEPARATOR
+    // TODO: Generic types
+    // TODO: Print types in order
     for (name, cases) in findUnions file do
         printUnionExtension name cases |> log
     for (name, fields) in findRecords file do
