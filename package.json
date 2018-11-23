@@ -5,13 +5,15 @@
   "main": "dist/Main.js",
   "scripts": {
     "build": "fable-splitter src/ --run",
-    "start": "yarn build --watch"
+    "start": "fable-splitter src/ -w --run"
   },
   "keywords": [],
-  "author": "",
+  "author": "Alfonso García-Caro",
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^10.12.7",
-    "fable-splitter": "^2.1.0-beta-001"
-  }
+    "fable-compiler": "^2.1.0-beta-003",
+    "fable-splitter": "^2.1.0-beta-005"
+  },
+  "dependencies": {}
 }
